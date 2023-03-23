@@ -81,6 +81,7 @@ class Gallery extends Component {
 
   closeModal = e => {
     if (
+      e.code === 'Escape' ||
       e.target === e.currentTarget ||
       e.currentTarget.classList.contains('close')
     )
