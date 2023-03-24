@@ -7,30 +7,55 @@ import { Component } from 'react';
 const modalRoot = document.querySelector('#modal-root');
 
 class Modal extends Component {
+  state = {
+    modalOpened: false,
+  };
+
   componentDidMount() {
-    window.addEventListener('keydown', e => {
-      if (e.code === 'Escape' && this.props.modalOpened) {
-        this.props.onCloseModal(e);
-      }
-    });
+    window.addEventListener('keydown', this.handleKeyDown);
+
+    setTimeout(() => {
+      this.setState({ modalOpened: true });
+    }, 150);
   }
 
-  render() {
-    const { onCloseModal, modalOpened, children } = this.props;
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeyDown);
+  }
 
+  handleKeyDown = e => {
+    if (e.code === 'Escape') {
+      this.handleCloseModal(e);
+    }
+  };
+
+  handleCloseModal = e => {
+    if (
+      e.code === 'Escape' ||
+      e.target === e.currentTarget ||
+      e.currentTarget.classList.contains('close')
+    ) {
+      this.setState({ modalOpened: false });
+      setTimeout(() => {
+        this.props.onCloseModal(e);
+      }, 150);
+    }
+  };
+
+  render() {
     return createPortal(
       <ModalStyled
-        onClick={onCloseModal}
-        className={!modalOpened ? 'is-hidden' : ''}
+        onClick={this.handleCloseModal}
+        className={!this.state.modalOpened ? 'is-hidden' : ''}
       >
         <div className="window">
           <div className="inner">
             <div className="container">
-              <div className="text">{children}</div>
+              <div className="text">{this.props.children}</div>
             </div>
           </div>
         </div>
-        <TfiClose onClick={onCloseModal} className="close" />
+        <TfiClose onClick={this.handleCloseModal} className="close" />
       </ModalStyled>,
       modalRoot
     );
@@ -39,7 +64,6 @@ class Modal extends Component {
 
 Modal.propTypes = {
   onCloseModal: PropTypes.func.isRequired,
-  modalOpened: PropTypes.bool.isRequired,
 };
 
 export default Modal;

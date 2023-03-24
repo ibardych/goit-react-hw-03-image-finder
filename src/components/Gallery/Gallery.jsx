@@ -41,25 +41,22 @@ class Gallery extends Component {
 
     this.setState({ status: 'pending' });
 
-    setTimeout(() => {
-      requestPixabayImages(params)
-        .then(response => {
-          const { totalHits, hits: images } = response.data;
+    requestPixabayImages(params)
+      .then(response => {
+        const { totalHits, hits: images } = response.data;
 
-          this.setState(prevState => ({
-            status: 'resolved',
-            total: totalHits,
-            reachedEnd: this.checkReachedEnd(totalHits),
-            images: [...prevState.images, ...images],
-          }));
+        this.setState(prevState => ({
+          status: 'resolved',
+          total: totalHits,
+          reachedEnd: this.checkReachedEnd(totalHits),
+          images: [...prevState.images, ...images],
+        }));
 
-          console.log(images);
-        })
-        .catch(error => {
-          this.setState({ status: 'rejected', error });
-        })
-        .finally(() => {});
-    }, 300);
+        console.log(images);
+      })
+      .catch(error => {
+        this.setState({ status: 'rejected', error });
+      });
   };
 
   checkReachedEnd = totalHits => {
@@ -80,15 +77,15 @@ class Gallery extends Component {
   };
 
   closeModal = e => {
-    if (
-      e.code === 'Escape' ||
-      e.target === e.currentTarget ||
-      e.currentTarget.classList.contains('close')
-    )
-      this.setState({
-        modalOpened: false,
-        largeImage: null,
-      });
+    // if (
+    //   e.code === 'Escape' ||
+    //   e.target === e.currentTarget ||
+    //   e.currentTarget.classList.contains('close')
+    // )
+    this.setState({
+      modalOpened: false,
+      largeImage: null,
+    });
   };
 
   render() {
@@ -124,15 +121,17 @@ class Gallery extends Component {
 
         {status === 'pending' && <Loader className="pending" />}
 
-        <Modal modalOpened={modalOpened} onCloseModal={this.closeModal}>
-          {largeImage && (
-            <img
-              className="large-image"
-              src={this.state.largeImage}
-              alt="large"
-            />
-          )}
-        </Modal>
+        {modalOpened && (
+          <Modal onCloseModal={this.closeModal}>
+            {largeImage && (
+              <img
+                className="large-image"
+                src={this.state.largeImage}
+                alt="large"
+              />
+            )}
+          </Modal>
+        )}
       </GalleryContainer>
     );
   }

@@ -14,6 +14,6 @@ export const SearchbarStyled = styled.header`
   margin-bottom: 30px;
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 4;
   box-shadow: 0 0 15px 0 rgb(0, 0, 0, 0.5);
 `;

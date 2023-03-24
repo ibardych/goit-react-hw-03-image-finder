@@ -22,7 +22,10 @@ class App extends Component {
     return (
       <>
         <MainContainer>
-          <Searchbar onHandleSearch={this.handleSearch} />
+          <Searchbar
+            onHandleSearch={this.handleSearch}
+            searchQuery={this.state.query}
+          />
           <PopularQueries
             queries={POPULAR_QUERIES}
             searchQuery={this.state.query}

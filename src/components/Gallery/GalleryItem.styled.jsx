@@ -31,7 +31,7 @@ export const GalleryItemStyled = styled.li`
   &:hover {
     transform: scale(1.03);
     box-shadow: 0px 0px 150px 5px rgb(0, 255, 222, 1);
-    z-index: 1;
+    z-index: 3;
 
     & .item {
       color: rgb(255, 255, 255, 0.8) !important;
@@ -41,6 +41,7 @@ export const GalleryItemStyled = styled.li`
   &::before {
     content: '';
     position: absolute;
+    z-index: 0;
     left: -50%;
     top: -50%;
     width: 200%;
@@ -81,6 +82,8 @@ export const GalleryItemStyled = styled.li`
     cursor: pointer;
     border-radius: 5px;
     overflow: hidden;
+    position: relative;
+    z-index: 1;
   }
 
   & .image-wrapper {
@@ -113,8 +116,6 @@ export const GalleryItemStyled = styled.li`
     gap: 10px;
     justify-content: space-evenly;
     padding: 22px 12px;
-    position: relative;
-    z-index: 1;
     background-color: rgb(31, 30, 43);
 
     & .item {
